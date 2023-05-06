@@ -9,10 +9,10 @@ on:
       version_number:
         description: 'Version number'
         required: true
-        default: 'v1.2.1'
+        default: 'v1.2.4'
       version_text:
         description: 'Description'
-        required: false
+        required: true
         default: ''
 
 jobs:
@@ -61,6 +61,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: "${{ inputs.version_number }}"
+        body: "${{ inputs.version_text }}"
         prerelease: false
         files: |
           ./hpmor*.pdf
