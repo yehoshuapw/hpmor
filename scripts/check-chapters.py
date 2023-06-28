@@ -52,19 +52,21 @@ with open(
     settings = json.load(fh_settings)
 
 
-def get_list_of_chapter_files() -> list:
+def get_list_of_chapter_files() -> list[str]:
     """
     Read hpmor.tex, extract list of (not-commented out) chapter files.
 
     returns list of filesnames
     """
-    list_of_files = []
+    list_of_files: list[str] = []
     with open("hpmor.tex", encoding="utf-8") as fh:
         lines = fh.readlines()
     lines = [elem for elem in lines if elem.startswith(r"\include{chapters/")]
     for line in lines:
-        file_name = re.search(r"^.*include\{(chapters/.+?)\}.*$", line).group(1)  # type: ignore
-        list_of_files.append(file_name + ".tex")
+        match = re.search(r"^.*include\{(chapters/.+?)\}.*$", line)
+        if match:
+            file_name = match.group(1)
+            list_of_files.append(f"{file_name}.tex")
     return list_of_files
 
 
@@ -96,7 +98,7 @@ def process_file(file_in: str) -> bool:
     # now split per line
     l_cont = cont.split("\n")
     del cont
-    l_cont_2 = []
+    l_cont_2: list[str] = []
     for line in l_cont:
         lineOrig = line
         # keep commented-out lines as they are
@@ -127,7 +129,9 @@ def process_file(file_in: str) -> bool:
                 encoding="utf-8",
             ) as file2:
                 diff = difflib.ndiff(file1.readlines(), file2.readlines())
-            delta = "".join(l for l in diff if l.startswith("+ ") or l.startswith("- "))
+            delta = "".join(
+                line for line in diff if line.startswith("+ ") or line.startswith("- ")
+            )
             print(delta)
 
     return issues_found
