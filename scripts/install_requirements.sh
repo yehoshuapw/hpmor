@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# update apt list
+sudo apt update --fix-missing
+
 # pdf
 sudo apt install texlive-xetex latexmk
 
