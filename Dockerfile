@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # base image
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 # set timezone
 ENV TZ=Europe/Berlin
