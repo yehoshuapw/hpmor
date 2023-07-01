@@ -6,75 +6,75 @@ name: Build HPMOR PDFs and eBooks
 on:
   workflow_dispatch: # manual triggering
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     # runs-on: ubuntu-latest
     steps:
+      - name: print start date
+        run: date +%Y-%m-%d_%H:%M
 
-    - name: print start date
-      run: date +%Y-%m-%d_%H:%M
+      - name: checkout repository
+        uses: actions/checkout@v3
 
-    - name: checkout repository
-      uses: actions/checkout@v3
+      - name: Python setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Python setup
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: set up Python cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-py-cache
 
-    - name: set up Python cache
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-py-cache
+      # - name: test ls before
+      #   run: |
+      #     pwd
+      #     ls -al
 
-    # - name: test ls before
-    #   run: |
-    #     pwd
-    #     ls -al
+      - name: quality check of chapters for known issues
+        run: python3 scripts/check-chapters.py
 
-    - name: quality check of chapters for known issues
-      run: python3 scripts/check-chapters.py
+      - name: run pre-commit tests
+        # configured in .pre-commit-config.yaml and setup.cfg
+        uses: pre-commit/action@v3.0.0
 
-    - name: run pre-commit tests
-      # configured in .pre-commit-config.yaml and setup.cfg
-      uses: pre-commit/action@v3.0.0
+      - name: install requirements
+        run: sh scripts/install_requirements.sh > /dev/null
 
-    - name: install requirements
-      run: sh scripts/install_requirements.sh > /dev/null
+      - name: print versions
+        run: |
+          cat /etc/os-release
+          xelatex -v
+          latexmk -v
+          pandoc -v
+          ebook-convert --version
+          python3 --version
 
-    - name: print versions
-      run: |
-        cat /etc/os-release
-        xelatex -v
-        latexmk -v
-        pandoc -v
-        python3 --version
+      - name: make PDFs
+        run: sh scripts/make_pdfs.sh > /dev/null
 
-    - name: make PDFs
-      run: sh scripts/make_pdfs.sh > /dev/null
+      - name: make eBooks
+        run: sh scripts/make_ebooks.sh
 
-    - name: make eBooks
-      run: sh scripts/make_ebooks.sh
+      - name: test ls after
+        run: |
+          pwd
+          ls -al
 
-    - name: test ls after
-      run: |
-        pwd
-        ls -al
+      - name: upload files to release WorkInProgress
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: WorkInProgress
+          prerelease: true
+          files: |
+            ./hpmor*.pdf
+            ./hpmor.epub
+            ./hpmor.mobi
+            ./hpmor.fb2
 
-    - name: upload files to release WorkInProgress
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: WorkInProgress
-        prerelease: true
-        files: |
-          ./hpmor*.pdf
-          ./hpmor.epub
-          ./hpmor.mobi
-          ./hpmor.fb2
-
-    - name: print end date
-      run: date +%Y-%m-%d_%H:%M
+      - name: print end date
+        run: date +%Y-%m-%d_%H:%M
