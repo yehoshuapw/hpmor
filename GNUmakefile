@@ -27,5 +27,5 @@ release: zip
 	woger github package=$(PROJECT) version=$(VERSION) dist_type=zip && \
 	for file in $(PROJECT).pdf $(EBOOKS); do \
 		suffix=$${file##*.}; \
-		gh release upload $(TAG) --attach $$file#$(PROJECT)-$(VERSION).$$suffix; \
+		gh release upload $(TAG) $$file#$(PROJECT)-$(VERSION).$$suffix; \
 	done
