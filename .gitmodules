@@ -1,0 +1,3 @@
+[submodule "covers"]
+	path = covers
+	url = https://github.com/ianstormtaylor/hpmor.git
