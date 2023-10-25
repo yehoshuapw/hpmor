@@ -15,8 +15,8 @@
 \newlength{\hpcoverheight} % coverheight: paper height + 1mm
 \setlength{\hpcoverheight}{\the\ht\z@ + 1mm}
 \makeatother
-% flapwidth: 60mm+3mm each side
-\documentclass[12pt,coverwidth=\the\hpcoverwidth,coverheight=\the\hpcoverheight,spinewidth=\the\hpspinewidth,marklength=0mm,bleedwidth=5mm,flapwidth=63mm]{bookcover}
+% flapwidth: 0mm each side
+\documentclass[12pt,coverwidth=\the\hpcoverwidth,coverheight=\the\hpcoverheight,spinewidth=\the\hpspinewidth,marklength=0mm,bleedwidth=5mm,flapwidth=0mm]{bookcover}
 
 \input{layout/hp-header}
 
@@ -47,25 +47,6 @@
   \vspace{20mm}
   \parbox{110mm}{\color{white}\Large\raggedright
 Petunia married a biochemist, and Harry grew up reading science and science fiction. Then came the Hogwarts letter, and a world of intriguing new possibilities to exploit. And new friends, like Hermione Granger, and Professor McGonagall, and Professor Quirrell…
-}
-\end{bookcoverelement}
-
-% Text on the front flap
-\begin{bookcoverelement}{normal}{front flap}
-\centering
-\vspace{20mm}
-\parbox{40mm}{\color{white}\raggedright\small
-  HPMOR comes from the world of fan-fiction. With J.~K.~Rowling’s approval, it tells the story of an alternate Harry, an auto-didact rationalist who brings all his powers to bear on the strange new vistas of the world of magic.
-
-  \bigskip The books introduce the reader to the ways of thinking Yudkowsky lays out in his blog, \url{lesswrong.com}.}
-\end{bookcoverelement}
-
-% Text on the back flap
-\begin{bookcoverelement}{normal}{back flap}
-\centering
-\vspace{20mm}
-\parbox{40mm}{\color{white}\small\raggedright
-  % PUT YOUR BACK DUST-FLAP TEXT HERE!
 }
 \end{bookcoverelement}
 
