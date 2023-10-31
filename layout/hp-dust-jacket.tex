@@ -4,7 +4,8 @@
 \newcounter{bookpagecount}
 \setcounter{bookpagecount}{\XeTeXpdfpagecount"\bookfile"}
 \RequirePackage{calc} % This line must be after the previous to avoid an error
-\RequirePackage{xfp} % This line must be after the previous to avoid an error
+\RequirePackage{xfp}
+\RequirePackage{xcolor}
 \newlength{\hppaperwidth} % no. of pages ÷ 2 (rounded up) × width per sheet
 \setlength{\hppaperwidth}{\bookpaper * \fpeval{ceil(\value{bookpagecount}/2)}}
 \newlength{\hpspinewidth} % paper thickness
@@ -27,7 +28,8 @@
 
 \begin{document}
 \begin{bookcover}
-\bookcovercomponent{color}{bg whole}{black}
+\definecolor{coversbg}{rgb}{0.07843 0.07451 0.09804}
+\bookcovercomponent{color}{bg whole}{coversbg}
 \bookcovercomponent{picture}{whole}{\coverfile}
 
 \end{bookcover}
